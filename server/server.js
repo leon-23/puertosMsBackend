@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const  mongoUrl = require( './config/config');
 
-
+var env = require('node-env-file');
+env(__dirname + '/.env');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,10 +29,18 @@ app.use(bodyParser.json());
 async function start () {
  
 
-const db = await mongoose.connect('mongo.exe mongodb://localhost:27017/manSolutions?authSource=12345 --username leon', { useNewUrlParser: true })
-  
+const db = await mongoose.connect(process.env.MONGO_URL,
+		{
+			useNewUrlParser: true,
+		 	useCreateIndex: true, useUnifiedTopology: true },
+        	(err, res) => {
+        		if(err) throw err;
 
-    
+  				console.log("Base de datos online");
+
+			}
+)
+     
     app.listen(port, () => {
   		console.log('Escuchando el puerto: ', port);
     });  

@@ -1,7 +1,7 @@
 const Puerto = require('../models/Puerto')
 
 // =====================
-// Crear nueva Puerto
+// Crear nuevo Puerto
 // =====================
 
 const save = async (req, res) =>{
@@ -10,12 +10,18 @@ const save = async (req, res) =>{
   const puertoS = new Puerto({ ...body });
   
   try{
-    const data = await puertoS.save(puertoS)
+    const data = await puertoS.save()
 
-    getData(res, data, 201);
+    getData(res, 200, data);
 
   }catch(error){
-    msjError(res, 500, {message: 'Ups! hemos cometido un error', error: error.toString()})
+    msjError(
+      res,
+      500,
+      {
+        message: 'Ups! hemos cometido un error',
+        error: error.toString()
+      })
   } 
 }
 
@@ -31,7 +37,7 @@ const find = async (req, res) => {
     try{
       !data.length 
       ? msjError(res,404,{message: 'no existen puertos registrados'})
-      : getData(res, data, 200)
+      : getData(res, 200, data)
 
     }catch(err){
         msjError(
@@ -54,7 +60,7 @@ const findById = async(req, res)=>{
   try{
     !data 
     ? msjError(res,404,{message: 'no existe el puerto con el id: '.concat(id) })
-    : getData(res, data, 200)
+    : getData(res, 200, data)
 
     }catch(err){
         msjError(
@@ -71,13 +77,11 @@ const findById = async(req, res)=>{
 const update = async (req, res)=>{
 
    const puerto = new Puerto({ ...req.body })
-
-   console.log("body:", puerto);
   
   try{
     const data = await puerto.updateOne(puerto);
 
-    getData(res, data, 200);
+    getData(res, 200, data);
 
   }catch(error){
     msjError(
@@ -92,14 +96,13 @@ const update = async (req, res)=>{
 // ===================================
 const deletePuerto = async (req, res)=>{
   const id = req.params.id;
-  console.log("id: ", id)
 
   try{
     const data =  await Puerto.findByIdAndRemove(id);
 
     !data 
     ? msjError(res,404,{message: 'no se pudo eliminar el puerto: '.concat(id) })
-    : getData(res, data, 200)
+    : getData(res, 200, data)
 
     }catch(err){
         msjError(
@@ -108,14 +111,15 @@ const deletePuerto = async (req, res)=>{
           { error: err.toString() })
    }
 }
-
+//enviame mensaje de error
 msjError = (res, cod, message ) =>{
   return res.status(cod).json({
         message,
       });
 }
 
-getData = (res, data, cod)=>{
+//envia respuesta
+getData = (res, cod, data)=>{
   return res.status(cod).json({
       data
     });
