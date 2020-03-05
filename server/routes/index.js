@@ -18,4 +18,6 @@ api.post('/puertos', puertosApi.save)
 
 api.put('/puertos', puertosApi.update)
 
+api.get('/puertos/find/:puerto', puertosApi.findByPort)
+
 module.exports = api;

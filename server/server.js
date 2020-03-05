@@ -1,13 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const  mongoUrl = require( './config/config');
+const mongoUrl = require( './config/config');
+const cors = require('cors');
 
 var env = require('node-env-file');
 env(__dirname + '/.env');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+
+//habilitar cors
+app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -19,6 +24,7 @@ app.use( require('./routes/index') );
  
 // parse application/json
 app.use(bodyParser.json());
+
 
 
 //Habilitar carpeta publica

@@ -29,7 +29,6 @@ const save = async (req, res) =>{
 // Listar Puerto ordenados por nombre
 // ===================================
 
-
 const find = async (req, res) => {
     //debug(`Finding Ports  with limit.`)
     const  data =  await Puerto.find().sort('nombre');
@@ -50,7 +49,6 @@ const find = async (req, res) => {
 // ===================================
 // Buscar Puerto por id
 // ===================================
-
 
 const findById = async(req, res)=>{
   const id = req.params.id;
@@ -77,6 +75,7 @@ const findById = async(req, res)=>{
 const update = async (req, res)=>{
 
    const puerto = new Puerto({ ...req.body })
+   console.log("puerto;", puerto);
   
   try{
     const data = await puerto.updateOne(puerto);
@@ -94,6 +93,7 @@ const update = async (req, res)=>{
 // ===================================
 // Elimiar (fisicamente) Puerto por id
 // ===================================
+
 const deletePuerto = async (req, res)=>{
   const id = req.params.id;
 
@@ -110,6 +110,23 @@ const deletePuerto = async (req, res)=>{
           500,
           { error: err.toString() })
    }
+}
+
+const findByPort = async (req, res)=>{
+
+  const puerto = req.params.puerto;
+
+  try{
+    const data = await Puerto.find({'puerto': puerto})
+   
+    const ok = data.length ? 0 : 1;
+
+    getData(res, 200, ok)
+
+  }catch(error){
+    console.error(error);
+  }
+
 }
 //enviame mensaje de error
 msjError = (res, cod, message ) =>{
@@ -131,4 +148,5 @@ module.exports = {
   findById,
   deletePuerto,
   update,
+  findByPort,
 }
