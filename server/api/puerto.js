@@ -75,7 +75,6 @@ const findById = async(req, res)=>{
 const update = async (req, res)=>{
 
    const puerto = new Puerto({ ...req.body })
-   console.log("puerto;", puerto);
   
   try{
     const data = await puerto.updateOne(puerto);
@@ -111,17 +110,19 @@ const deletePuerto = async (req, res)=>{
           { error: err.toString() })
    }
 }
+// ===================================
+// Busca un puerto por el numero 
+// ===================================
 
 const findByPort = async (req, res)=>{
 
   const puerto = req.params.puerto;
 
   try{
-    const data = await Puerto.find({'puerto': puerto})
+    const data = await Puerto.findOne({'puerto': puerto })
    
-    const ok = data.length ? 0 : 1;
 
-    getData(res, 200, ok)
+    getData(res, 200, data);
 
   }catch(error){
     console.error(error);
