@@ -7,11 +7,10 @@ const Puerto = require('../models/Puerto')
 const save = async (req, res) =>{
 
   const body = req.body;
-  const puertoS = new Puerto({ ...body });
+  const puerto = new Puerto({ ...body });
   
   try{
-    const data = await puertoS.save()
-
+    const data = await puerto.save()
     getData(res, 200, data);
 
   }catch(error){
@@ -130,14 +129,14 @@ const findByPort = async (req, res)=>{
 
 }
 //enviame mensaje de error
-msjError = (res, cod, message ) =>{
+const msjError = (res, cod, message ) =>{
   return res.status(cod).json({
         message,
       });
 }
 
 //envia respuesta
-getData = (res, cod, data)=>{
+const getData = (res, cod, data)=>{
   return res.status(cod).json({
       data
     });
